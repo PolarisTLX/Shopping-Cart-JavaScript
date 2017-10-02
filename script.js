@@ -95,18 +95,20 @@ function addItemToCart(name, price, count) {
     if (cart[i].name === name) {
       cart[i].count += count;
       //if found, return to stop this function here
+      saveCart();
       return;
     }
   }
   //if no item by that name was found, add one of it to the cart
   cart.push(item);
+  saveCart();
 }
 
 ///*  TEST
 addItemToCart("Apple", 1.22, 3);
 addItemToCart("Pear", 1.57, 2);
 addItemToCart("Apple", 1.22, 3);
-console.log(cart);
+//console.log(cart);
 //*/
 
 //removes 1 item from cart
@@ -120,6 +122,7 @@ function removeItemFromCart(name) {
         cart.splice(i, 1);
       }
       //if item desired removed exists and is not 0, reduce by 1, and stop function here
+      saveCart();
       return;
     }
   }
@@ -150,6 +153,7 @@ function removeItemFromCartAll(name) {
       //if item exists, remove that item object from the cart array entirely
       //.splice(position in array, how many items removed from that position)
       cart.splice(i, 1);
+      saveCart();
       return;
     }
   }
@@ -169,6 +173,7 @@ console.log(cart);
 //Empty cart
 function emptyCart() {
   cart = [];
+  saveCart();
 }
 
 /*  TEST
@@ -177,28 +182,147 @@ emptyCart();
 console.log(cart.length);
 */
 
+//End of lecture 10 of 34
+
+
+//Lecture 11
 
 //return total number of items in the cart
 function countCart() {
-
+  var totalCount = 0;
+  for (i in cart){
+    totalCount += cart[i].count;
+  }
+  return totalCount;
 }
+
+//console.log(countCart());
+
+
 
 //return total $ cost of shopping cart
 function totalCart() {
-
+  var totalCartCost = 0;
+  for (i in cart) {
+    totalCartCost += cart[i].count * cart[i].price;
+  }
+  return totalCartCost;
 }
 
-//show the whole cart
+//console.log("$"+totalCart());
+
+
+
+/*
+//Concept practice:
+var a = ["A", "B", "C"];
+var b = a;   //this makes a reference, not a copy!!!
+b.push("D");
+console.log(b);  //these two return the same thing!
+console.log(a);  //these two return the same thing!
+//what affects b ALSO affects a in this case and vice versa.
+*/
+
+/*
+//if I instead do:
+var a = ["A", "B", "C"];
+
+var b = a.slice();  //THIS CREATES A COPY INSTEAD OF A REFERENCE
+
+b.push("D");
+console.log(b);  //these DONT return the same thing!
+console.log(a);
+*/
+
+//PROBLEM IS THAT YOU CAN'T DO THIS FOR AN OBJECT
+//(or anything that has objects in it)
+//like ".slice()" makes a copy of an array!!!
+
+//REUSABLE CODE!!
+/*to create a copy of an object:
+var cartCopy = [];
+for (i in cart) {
+  var item = cart[i];
+  var itemCopy = {};
+  for (property in item) {
+    itemCopy[property] = item[property];
+  }
+  cartCopy.push(itemCopy);
+}
+return cartCopy;
+*/
+
+
+//show the whole cart, will just return an array
 function listCart() {
-
+  var cartCopy = [];
+  for (i in cart) {
+    var item = cart[i];
+    var itemCopy = {};
+    for (property in item) {
+      itemCopy[property] = item[property];
+    }
+    cartCopy.push(itemCopy);
+  }
+  return cartCopy;
 }
+
+/*
+var mistakeArray = listCart();
+mistakeArray[0].name = "Mistake";
+console.log(mistakeArray);
+console.log(cart);  //here the original cart array with objects is left untouched
+*/
+
 
 //save the cart locally
-function saveCart(){
-
+function saveCart() {
+  //localStorage.setItem("name", value);
+  //localStorage.setItem("shoppingCart", cart);
+  //NOTE local storage is best for strings and numbers
+  //so going to convert cart into a usable string:
+  localStorage.setItem("shoppingCart", JSON.stringify(cart));
 }
+
+saveCart();  //call this after adding each item! for example
+
+/*TEST
+//localStorage.setItem("usernametest", "Joe");
+//this will show up as an entry in the developer tools -> Application > Storage -> Local Storage -> file://
+//and will not go away until the browser is closed
+
+addItemToCart("Apple", 1.22, 4);  //10 shown in local storage
+removeItemFromCart("Apple");  //9 shown in local storage
+removeItemFromCart("Apple");  //8 shown in local storage
+removeItemFromCart("Apple");  //7 shown in local storage
+removeItemFromCartAll("Apple");  //Apple removed completed from local storage
+*/
 
 //load saved cart from storage
 function loadCart() {
-
+  //cart = localStorage.getItem("shoppingCart");
+  //NOTE this will be a string because that's how we store it
+  //need to convert it back into usable code
+  cart = JSON.parse(localStorage.getItem("shoppingCart"));
 }
+
+loadCart();
+
+var array = listCart();
+console.log(array);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//
