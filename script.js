@@ -312,6 +312,35 @@ var array = listCart();
 console.log(array);
 
 
+// Lecture 15
+//jQuery portion
+
+$(".add-to-cart").click(function(event) {
+  event.preventDefault();   //this prevents a link from refreshing the page, which is their default behavior
+  var name = $(this).attr("data-name");  //attr is attribute
+  var price = Number($(this).attr("data-price"));
+  //need to make Number() because it comes back as a string
+
+  //call function that we wrote earleir
+  addItemToCart(name, price, 1);
+  //call function below that places the item in the HTML:
+  displayCart();
+});
+
+
+//now we want items in cart to populate a section of the html:
+function displayCart() {
+  var cartArray = listCart();
+  var output = "";
+  for(i in cartArray) {
+    output += "<li>"+cartArray[i].name+" "+cartArray[i].price+" "+cartArray[i].count+"</li>";
+  }
+  $("#show-cart").html(output);
+  //output is what will replace / overwrite
+  // what is currently written in the portion of the html
+  //that has id="show-cart"
+}
+
 
 
 
