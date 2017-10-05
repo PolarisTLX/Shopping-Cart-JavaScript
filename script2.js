@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 //JavaScript code for Shopping Cart Project
 
 //code forked from here before creating a uniquely named variable,
@@ -406,7 +406,7 @@ SC.displayCart = function() {
     output += "<li>"
     +cartArray[i].name
     +" Price: $"+cartArray[i].price
-    +" Quantity: <input class='count-input' type='number' data-name='"+cartArray[i].name+"' value='"+cartArray[i].count+"'>"
+    +" Quantity: <input class='count-input' type='number' data-name='"+cartArray[i].name+"' value='"+cartArray[i].count+"' style='width: 20px;'>"
     +"   Subtotal: $"+cartArray[i].subtotal
     //add a delete 1 button
     +" <button class='delete-item' data-name='"
@@ -587,7 +587,7 @@ test.countCart();
 console.log(test.cart);
 
 */
-=======
+
 //JavaScript code for Shopping Cart Project
 
 //code forked from here before creating a uniquely named variable,
@@ -693,9 +693,12 @@ console.log(cart);
 //function addItemToCart(name, price, count) {
 SC.addItemToCart = function(name, price, count) {
   //if name already exists, just increase the count of that item
+  console.log("add item is called");
   for (i in SC.cart) {
     if (SC.cart[i].name === name) {
-      SC.cart[i].count += count;
+      console.log(SC.cart[i].count);
+      SC.cart[i].count++;
+      console.log(SC.cart[i].count);
       //if found, return to stop this function here
       SC.saveCart();
       SC.displayCart();
@@ -753,14 +756,8 @@ SC.removeItemFromCart = function(name) {
 
 /*
 console.log(cart[0].count);
-removeItemFromCart("Apple");   //5
-removeItemFromCart("Apple");   //4
-console.log(cart[0].count);
-removeItemFromCart("Banana");
-removeItemFromCart("Apple");  //3
 removeItemFromCart("Apple");  //2
 removeItemFromCart("Apple");  //1
-removeItemFromCart("Apple");  //0
 removeItemFromCart("Apple");  //0
 removeItemFromCart("Apple");  //0
 console.log(cart);
@@ -968,6 +965,7 @@ $(".add-to-cart").click(function(event) {
 
   //call function that we wrote earleir
   SC.addItemToCart(name, price, 1);
+  console.log("add to cart called");
   //call function below that places the item in the HTML:
   SC.displayCart();
 
@@ -1176,4 +1174,3 @@ test.countCart();
 console.log(test.cart);
 
 */
->>>>>>> refs/remotes/origin/master

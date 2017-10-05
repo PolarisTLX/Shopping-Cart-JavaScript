@@ -116,6 +116,20 @@ function addItemToCart(name, price, count) {
 //console.log(cart);
 //*/
 
+
+//user manual inputs item count:
+function userInputCount(name, count) {
+  for (i in cart) {
+    if (cart[i].name === name) {
+      cart[i].count = count;
+      saveCart();
+      displayCart();
+      break;
+    }
+  }
+};
+
+
 //removes 1 item from cart
 function removeItemFromCart(name) {
   for (i in cart) {
@@ -371,12 +385,9 @@ function displayCart() {
   for(i in cartArray) {
     output += "<li>"
     +cartArray[i].name
-    +" Price: $"
-    +cartArray[i].price
-    +" Quantity: "
-    +cartArray[i].count
-    +"   Subtotal: $"
-    +cartArray[i].subtotal
+    +" Price: $"+cartArray[i].price
+    +" Quantity: <input style='width: 2.5em' class='count-input' type='number' data-name='"+cartArray[i].name+"' value='"+cartArray[i].count+"'>"
+    +"   Subtotal: $"+cartArray[i].subtotal
     //add a delete 1 button
     +" <button class='delete-item' data-name='"
     +cartArray[i].name+"' data-price='"
@@ -398,6 +409,8 @@ function displayCart() {
   //var totalCartRound = Math.floor(totalCart());
   //did the rounding with .toFixed(2) in the totalCart() function
   $("#total-cart").html("Total Cart: $"+totalCart());
+  //number of items in the cart
+  $("#count-cart").html(countCart());
 }
 
 //act on "-" button that is added during displayCart() function
@@ -430,6 +443,16 @@ $("#show-cart").on("click", ".add-item", function(event) {
 $("#show-cart").on("click", ".delete-item-all", function(event) {
   var name = $(this).attr("data-name");
   removeItemFromCartAll(name);
+});
+
+
+//USER manually inputs a quantity of an item
+$("#show-cart").on("change", ".count-input", function(event) {
+  var name = $(this).attr("data-name");
+  //the count will be the value typed into the field, which is .val()
+  //NOTE, this comes back as a string, so need to wrap in Number()
+  var count = Number($(this).val());
+  userInputCount(name, count);
 });
 
 //to have cart show up on pageload:
